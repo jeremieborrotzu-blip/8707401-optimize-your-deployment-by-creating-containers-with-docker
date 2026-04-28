@@ -1,10 +1,10 @@
 {{define "header"}}
 {{ template "nav" . }}
 <div id="message">
-  <h1>Votre fichier est prêt à être téléchargé !</h1>
+  <h1>Your file is ready for download!</h1>
   <p>
-    Transmettez le lien ci-dessous au destinataire afin que celui ci puisse
-    récupérer votre fichier et déchiffrer automatiquement celui-ci:
+    Share the link below with the recipient so they can retrieve and
+    automatically decrypt your file:
   </p>
   <p>
     <a
@@ -17,7 +17,7 @@
   </p>
   <p>
     <a id="copy-link" href="#" onClick="copyLink(event)">
-      <b>Copier le lien</b>
+      <b>Copy link</b>
     </a>
   </p>
 </div>
@@ -40,7 +40,7 @@
     const link = document.getElementById("download-link").href;
     navigator.clipboard.writeText(link).then(
       function () {
-        document.getElementById("copy-link").innerHTML = "<i>Lien copié !</i>";
+        document.getElementById("copy-link").innerHTML = "<i>Link copied!</i>";
       },
       function (err) {
         console.error(err);
@@ -51,9 +51,9 @@
 
   function showError() {
     document.getElementById("message").innerHTML = `
-      <h1>Une erreur est survenue !</h1>
+      <h1>An error occurred!</h1>
       <p>
-        Veuillez réessayer d'envoyer votre fichier en <a href="{{ .BaseURL }}">cliquant ici.</a>
+        Please try uploading your file again by <a href="{{ .BaseURL }}">clicking here.</a>
       </p>
     `;
   }

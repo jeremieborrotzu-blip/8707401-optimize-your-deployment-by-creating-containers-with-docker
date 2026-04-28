@@ -2,7 +2,7 @@
 {{ template "nav" . }}
 <section>
   <article id="message">
-    <h2>Veuillez patienter...</h2>
+    <h2>Please wait...</h2>
   </article>
 </section>
 <script type="text/javascript">
@@ -22,20 +22,20 @@
         const rawInfo = decoder.decode(data);
         fileInfo = JSON.parse(rawInfo);
         message.innerHTML = `
-        <h2>Souhaitez vous télécharger le fichier <code>${fileInfo.name}</code> de type <code>${fileInfo.type}</code> ?</h2>
+        <h2>Would you like to download the file <code>${fileInfo.name}</code> of type <code>${fileInfo.type}</code>?</h2>
         <p>
           <a href="${window.location.hash}" onClick="downloadFile(event)">
-            <b>Si oui, cliquez ici</b>
+            <b>Yes, click here</b>
           </a>
         </p>
-        <p><i>Le fichier sera automatiquement supprimé du serveur après téléchargement.</i></p>
+        <p><i>The file will be automatically deleted from the server after download.</i></p>
       `;
       })
       .catch((err) => {
         console.error(err);
         message.innerHTML = `
-        <h2>Une erreur est survenue !</h2>
-        <p>Il nous est impossible de retrouver le fichier demandé. Vérifiez que le lien est valide ou que le fichier n'a pas déjà été téléchargé.</p>
+        <h2>An error occurred!</h2>
+        <p>We were unable to find the requested file. Please check that the link is valid or that the file has not already been downloaded.</p>
       `;
       });
   }

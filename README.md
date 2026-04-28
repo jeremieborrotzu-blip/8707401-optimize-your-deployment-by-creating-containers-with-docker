@@ -1,33 +1,33 @@
-# Libra - Partagez vos documents en toute sécurité !
+# Libra - Share your documents securely!
 
-> ⚠ **Ceci est une application factice**
+> ⚠ **This is a dummy application**
 >
-> Elle a été créée dans l'objectif d'accompagner le cours sur Docker proposé par OpenClassrooms. Aucun audit de sécurité n'a été réalisé pour valider le fonctionnement de celle-ci et à ce titre elle ne devrait en aucun cas être utilisée en production.
+> It was created to accompany the Docker course offered by OpenClassrooms. No security audit has been performed to validate its operation and as such it should under no circumstances be used in production.
 
-## Démarrer avec les sources
+## Getting Started With the Source Code
 
-### Prérequis
+### Prerequisites
 
 - [Go >= 1.23](https://go.dev/)
 - [Make](https://www.gnu.org/software/make/)
 
-### Commandes
+### Commands
 
-#### Compiler l'application
+#### Build the application
 
 ```bash
 make build
 ```
 
-Le binaire généré sera disponible dans le répertoire `./bin`. Exécuter `./bin/libra -h` pour voir les options de configuration disponibles.
+The generated binary will be available in the `./bin` directory. Run `./bin/libra -h` to see the available configuration options.
 
-#### Générer les différentes images Docker
+#### Generate the Docker images
 
 ```bash
 make docker-images
 ```
 
-Les images générées porteront le nom `libra/<variante>-latest`.
+The generated images will be named `libra/<variant>-latest`.
 
 ## License
 

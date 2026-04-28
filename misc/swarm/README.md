@@ -1,54 +1,54 @@
-# Docker Swarm dans Docker
+# Docker Swarm in Docker
 
-Le fichier `docker-compose.yml` contenu dans ce répertoire permet de démarrer un cluster [Docker Swarm](https://docs.docker.com/engine/swarm/) dans un environnement [Docker Compose](https://docs.docker.com/compose/), autrement dit sans avoir à démarrer plusieurs machines avec Docker.
+The `docker-compose.yml` file in this directory allows you to start a [Docker Swarm](https://docs.docker.com/engine/swarm/) cluster in a [Docker Compose](https://docs.docker.com/compose/) environment, meaning without having to start multiple machines with Docker.
 
-## Démarrer le cluster Swarm
+## Start the Swarm Cluster
 
-1. Se positionner dans le répertoire:
+1. Navigate to the directory:
 
    ```bash
    cd misc/swarm
    ```
 
-2. Exécuter la commande `docker compose up`
+2. Run the command `docker compose up`
 
-Après quelques secondes, le cluster Swarm devrait être initialisé et prêt à l'emploi.
+After a few seconds, the Swarm cluster should be initialized and ready to use.
 
-## Manipuler le cluster
+## Manage the Cluster
 
-Pour manipuler le cluster et exécuter des commandes Docker sur celui-ci, deux options sont possibles.
+To manage the cluster and execute Docker commands on it, two options are available.
 
-### Entrer dans le conteneur
+### Enter the Container
 
-Vous pouvez entrer les commandes Docker directement en entrant dans le conteneur `manager`. Pour ce faire, faites:
+You can enter Docker commands directly by entering the `manager` container. To do so, run:
 
 ```bash
 docker compose exec manager /bin/sh
 ```
 
-Puis tapez les commandes Docker souhaitées, par exemple:
+Then type the desired Docker commands, for example:
 
 ```bash
 docker node ls
 ```
 
-### Avec le client de sa machine hôte
+### Using the Host Machine's Docker Client
 
-Vous pouvez également interroger votre cluster Swarm en utilisant le client Docker de votre machine hôte. Pour ce faire:
+You can also query your Swarm cluster using the Docker client on your host machine. To do so:
 
 ```bash
-# Récupérez les droits sur le répertoire `certs/client`
+# Recover permissions on the `certs/client` directory
 sudo chown -R $(whoami): certs/client
 
-# Récupérer la liste des noeuds constituant votre cluster Swarm
+# Retrieve the list of nodes in your Swarm cluster
 docker --tlscacert ./certs/client/ca.pem --tlscert ./certs/client/cert.pem  --tlskey ./certs/client/key.pem --tls -H localhost:22376 node ls
 ```
 
-Il vous faudra préciser à chaque fois les flags `--tlscacert`, `--tlscert`, `--tlskey`, `--tls` et `-H` afin de communiquer avec le daemon Docker de votre noeud `manager`.
+You will need to specify the `--tlscacert`, `--tlscert`, `--tlskey`, `--tls`, and `-H` flags each time in order to communicate with the Docker daemon of your `manager` node.
 
-## Nettoyer l'environnement
+## Clean Up the Environment
 
-Pour nettoyer l'environnement, vous pouvez faire:
+To clean up the environment, run:
 
 ```bash
 docker compose down --remove-orphans -v
