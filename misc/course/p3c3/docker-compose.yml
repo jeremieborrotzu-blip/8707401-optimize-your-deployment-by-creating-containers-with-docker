@@ -1,24 +1,23 @@
-# Les contraintes dans ce fichier docker-compose se basent sur
-# le postulat que les différents noeuds du cluster Swarm
-# ont été annotés avec les labels "model=storage" et
-# "model=compute".
+# The placement constraints in this file assume that the various
+# nodes in the Swarm cluster have been labeled with
+# "model=storage" and "model=compute".
 #
-# Exemple:
+# Example:
 #
 # docker node update --label-add model=storage <node1_name>
 # docker node update --label-add model=compute <node2_name>
 
 services:
-  # On déclare notre service Minio, qui exposera sa console
-  # d'administration sur http://localhost:9001
+  # Declare the Minio service, which will expose its admin console
+  # at http://localhost:9001
   #
-  # Les identifiants d'administration seront:
-  # - Utilisateur: minio
-  # - Mot de passe: NotSoSecret
+  # Admin credentials:
+  # - User: minio
+  # - Password: NotSoSecret
   #
-  # Les données stockées par le service Minio seront placées
-  # dans le répertoire /data, qui utilisera un volume nommé
-  # "minio_storage".
+  # Data stored by the Minio service will be placed
+  # in the /data directory, using a named volume
+  # called "minio_storage".
   minio:
     image: minio/minio
     ports:
@@ -30,41 +29,40 @@ services:
       MINIO_ROOT_PASSWORD: NotSoSecret
     command: server --console-address ":9001" /data
     deploy:
-      # On place le conteneur "minio" sur les noeuds marqués
-      # avec le label "model=compute"
+      # Place the "minio" container on nodes labeled
+      # with "model=storage"
       placement:
         constraints:
           - node.labels.model == storage
 
-  # On déclare le service "libra", utilisant l'image "libra:latest"
-  # construite lors de l'exercice précédant.
+  # Declare the "libra" service, using the "libra:latest" image
+  # built in the previous exercise.
   libra:
     image: ghcr.io/bornholm/libra:0.0.3
-    # L'application Libra sera disponible sur http://localhost:8080
+    # The Libra application will be available at http://localhost:8080
     ports:
       - 8080:8080
     environment:
-      # On configure Libra afin qu'elle utilise le service "minio"
-      # Voir le fichier cmd/libra/store.go dans les sources de l'application
-      # pour plus d'informations.
+      # Configure Libra to use the "minio" service.
+      # See cmd/libra/store.go in the application sources
+      # for more information.
       LIBRA_STORE_DSN: s3://minio:NotSoSecret@minio:9000/libra
 
-    # Configuration spécifique pour Docker Swarm
+    # Docker Swarm-specific configuration
     deploy:
-      # Déploiement de 3 instances de l'application
+      # Deploy 3 instances of the application
       replicas: 3
       update_config:
-        # On met à jour les conteneurs Libra un à un
+        # Update Libra containers one at a time
         parallelism: 1
-        # Un délai de 5s secondes entre chaque mise à jour de conteneur
-        # est respecté
+        # A 5-second delay between each container update
         delay: 5s
-      # On place les conteneurs "libra" sur les noeuds marqués
-      # avec le label "model=compute"
+      # Place the "libra" containers on nodes labeled
+      # with "model=compute"
       placement:
         constraints:
           - node.labels.model == compute
 
-# On déclare les volumes utilisés par nos différents services.
+# Declare the volumes used by the various services.
 volumes:
   minio_storage:
